@@ -1,6 +1,6 @@
 class PublishedGlobal {
   constructor(){
-    this.p_sa = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1DNXHVuHs047d7nEf9Ti4oTsdSEpEcJB2ecaAwHVXDKU/edit?usp=sharing')
+    this.p_sa = SpreadsheetApp.openByUrl(//FileUrl")
     
     this.p_configSheet = this.getSheetById(this.p_sa,491417517)
     this.p_configSheetName = this.p_configSheet.getName()
