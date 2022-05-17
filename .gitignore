@@ -1,4 +1,9 @@
 dict/working/PublishedGlobal.js
+dict/en/PublishedGlobal.js
+dict/jp/PublishedGlobal.js
+dict/zh-ZH/PublishedGlobal.js
+dict/zh-TW/PublishedGlobal.js
+dict/dev/PublishedGlobal.js
 
 Slack.js
 .clasp.json
