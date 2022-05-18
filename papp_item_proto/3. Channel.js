@@ -37,6 +37,7 @@ class Channel extends Publ{
       rowRange : channel.pCASheetLastRow,
       colRange : channel.pCASheetLastCol
     })
+    console.log(`target_channel_id = ${target_channel_id}`)
     const [rowNumber, rowInfo] = channel.find_row_number_info(targetSheet,2,target_channel_id)
     if(!rowNumber) throw new Error("해당하는 채널이 없습니다.")
   }

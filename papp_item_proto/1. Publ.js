@@ -33,36 +33,18 @@ class Publ extends Global{
       values : cashIssueHistoryRow
     })
 
-    /* 업데이트할 row랑 정보 확인. 
-    * 없으면 새로 생성.
-    * 있으면 업데이트
-    */
+    // 업데이트할 row랑 정보 확인. 
     const [rowNumber, rowInfo] = publ.get_publ_account_info_by_channel_id(channelId) 
 
-    // 만약 없다면
-    if(!rowNumber){
-      const createRow = publ.get_publ_row_to_create(channelId, issuedAmount)
-      // 새로 업데이트 해주기
-      publ.set_row_bulk({
-        sheet : publ.publCashAccountSheet,
-        startRow : publ.pCASheetLastRow+1,
-        startCol : 1,
-        rowRange : createRow.length,
-        colRange : createRow[0].length,
-        values : createRow
-      })
-    } else {
-      //만약 있다면 
-      const updateRow = publ.get_publ_row_to_update(rowInfo, "캐시 충전", issuedAmount)
-      publ.set_row_bulk({
-        sheet : publ.publCashAccountSheet,
-        startRow : rowNumber,
-        startCol : 1,
-        rowRange : updateRow.length,
-        colRange : updateRow[0].length,
-        values : updateRow
-      })
-    }
+    const updateRow = publ.get_publ_row_to_update(rowInfo, "캐시 충전", issuedAmount)
+    publ.set_row_bulk({
+      sheet : publ.publCashAccountSheet,
+      startRow : rowNumber,
+      startCol : 1,
+      rowRange : updateRow.length,
+      colRange : updateRow[0].length,
+      values : updateRow
+    })
   }
 
   /**
@@ -87,7 +69,6 @@ class Publ extends Global{
   * type : 발행 || 유통 || 회수
   */
   get_publ_row_to_update(rowInfo, type, amount){
-    console.log(`prev rowInfo -= ${rowInfo}`)
     switch(type){
       case "캐시 충전":
         rowInfo[2] = rowInfo[2] + amount
@@ -100,7 +81,6 @@ class Publ extends Global{
       default : 
         break;
     }
-    console.log(`after rowInfo = ${rowInfo}`)
     return [rowInfo]
   }
 

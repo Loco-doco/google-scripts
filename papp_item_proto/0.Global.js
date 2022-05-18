@@ -1,9 +1,6 @@
 class Global {
   constructor(){
     this.sa = SpreadsheetApp.getActiveSpreadsheet();
-    this.currSheet = this.sa.getActiveSheet();
-
-
     this.configSheet = this.getSheetById(this.sa, 598031230)
     
     this.userConsoleSheet = this.getSheetById(this.sa, 1584717489)

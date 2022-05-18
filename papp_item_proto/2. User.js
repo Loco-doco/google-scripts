@@ -56,7 +56,9 @@ class User extends Publ{
   */
   static charge_transaction(target_user_id,target_channel_id,cash_product_id){
     const user = new User(target_user_id,target_channel_id);
-    user.valid_user_channel_rel();
+    user.valid_user(); // 유저 검증
+    Channel.valid_channel_id(target_channel_id) // 채널 검증
+    user.valid_user_channel_rel(); // 유저랑 채널 관계성 검증
 
     // history 현재 row 수 갖고 오기 (한 트랜잭션에서 여러개 넣어야 하니까)
     const history = new History();
@@ -101,7 +103,6 @@ class User extends Publ{
    */
   valid_user_channel_rel(){
     const [rowNumber, rowInfo] = this.get_user_account_info_by_id_and_channel(this.user_distinct_id, this.channel_distinct_id)
-    console.log(rowNumber)
     if(!rowNumber) throw new Error(`아직 구독하지 않은 사용자. 구독 먼저 하셈`)
   }
 
@@ -162,7 +163,6 @@ class User extends Publ{
   * output : row(2darray)
   */
   get_user_row_to_update(rowInfo, type, amount){
-    console.log(`prev rowInfo -= ${rowInfo}`)
     switch(type){
       case "캐시 충전":
         rowInfo[3] = rowInfo[3] + amount
@@ -175,7 +175,6 @@ class User extends Publ{
       default : 
         break;
     }
-    console.log(`after rowInfo = ${rowInfo}`)
     return [rowInfo]
   }
 
@@ -190,7 +189,6 @@ class User extends Publ{
       rowRange : this.uCASheetLastRow,
       colRange : this.uCASheetLastCol
     })
-    console.log(targetSheet)
     return this.find_row_number_info(targetSheet,1,userId)
   }
 
@@ -206,7 +204,6 @@ class User extends Publ{
       rowRange : this.uCASheetLastRow,
       colRange : this.uCASheetLastCol
     })
-    console.log(targetSheet)
     return this.find_row_number_info_by_double_values(targetSheet,1,userId,2,channelId)
   }
 

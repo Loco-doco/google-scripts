@@ -21,6 +21,7 @@ function create_user_account_and_subs_channel() {
 * 이미 있는 채널에 이미 있는 유저 추가(구좌 만들기)
 */
 function create_user_channel_rel(){
+  const global = new Global();
   const target_user_id = global.userConsoleSheet.getRange("B6").getValue()
   const target_channel_id = global.userConsoleSheet.getRange("B7").getValue()
   User.create_user_channel_rel(target_user_id,target_channel_id)
@@ -31,7 +32,7 @@ function create_user_channel_rel(){
 * 유저의 특정 채널에 캐시 충전
 */
 function charge_cash_by_purchase_cash_product() {
-  User.charge_transaction("U-5jhbwugck6","C-dr6b6k9vq84","CP-w1aden8t")
+  User.charge_transaction("U-loknfdipms","C-qu5f7b4guj","CP-2")
 }
 
 /*
