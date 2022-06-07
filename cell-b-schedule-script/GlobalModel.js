@@ -1,3 +1,9 @@
+/**
+ * 엑셀의 각 Cell에서 스크립트에서 커스텀한 함수를 호출하여 동작하는 형태로 쓰이는게 아닌, 
+ * 각 Cell의 호출 없이 스크립트가 직접 엑셀을 건드릴 때 쓰기 위함.
+ */
+
+
 class Global {
   constructor(){
     this.sa = SpreadsheetApp.getActiveSpreadsheet();
