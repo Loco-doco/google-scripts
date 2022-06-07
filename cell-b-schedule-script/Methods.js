@@ -85,11 +85,10 @@ function is_today(date){
 
 /**
  * 시트 상의 공휴일 목록을 불러와 빈 값을 뺀 리스트 반영
- * 다만, 시트 상에 표시되는 날짜랑 1일 차이가 있으므로 이를 보정 (addDays)
  */
 function get_holiday_list(holidays){
   const result = holidays.reduce((acc,holiday) => {
-    if(holiday[0]) acc.push(new Date(holiday[0]).addDays(1))
+    if(holiday[0]) acc.push(new Date(holiday[0]))
     return acc
   },[])
   return result

@@ -44,9 +44,7 @@ function get_date_between_start_and_end(startDate, endDate) {
 /**
  * 일별로 나누어진 일자들 수정. 
  * 토, 일요일 빼기
- * Locale한 date에 +1씩 더해서 표시 시간으로 만들기.
- * (모종의 이유로, 셀에 적혀있는 일자를 갖고올 시 -1일로 인식되기에)
- * (ex : 셀에는 2022-05-02로 적혀있으나, 스크립트로 찍으면 2022-05-01로 찍힘.)
+ * 공휴일 빼기
  * @param {array} dateArray Locale한 date들 Array
  */
 function get_fixed_date(dateArray, holidays) {
@@ -56,13 +54,12 @@ function get_fixed_date(dateArray, holidays) {
 
   dateArray.reduce((acc,date) => {
 
-    viewDate = date.addDays(1) // 표시용 date에는 Locale date의 일자 값 + 1
-    const isHoliday = is_holiday(viewDate, holidays)
-    if(viewDate.getDay() !== 6 && viewDate.getDay() !== 0 && !isHoliday){ // 토, 일요일 빼기, 공휴일 빼기
+    const isHoliday = is_holiday(date, holidays)
+    if(date.getDay() !== 6 && date.getDay() !== 0 && !isHoliday){ // 토, 일요일 빼기, 공휴일 빼기
       rowDate.push( date );
-      is_today(viewDate)
-      ? rowViewDate.push(`${viewDate.getMonth()+1}.${viewDate.getDate()} (오늘)`)
-      : rowViewDate.push(`${viewDate.getMonth()+1}.${viewDate.getDate()}`)
+      is_today(date)
+      ? rowViewDate.push(`${date.getMonth()+1}.${date.getDate()} (오늘)`)
+      : rowViewDate.push(`${date.getMonth()+1}.${date.getDate()}`)
     }
   },'')
 
