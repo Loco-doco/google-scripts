@@ -50,21 +50,42 @@ function get_working_days(startDate, endDate) {
     return count-2;
 }
 
+function get_working_days_array(startDate, endDate, holidays){
+  startDate = new Date(startDate.getTime());
+  startDate.setDate(startDate.getDate() + 1)
+  endDate.setDate(endDate.getDate()-1)
+
+  let obj = new Object();
+  let i=0;
+  while (startDate <= endDate){
+    const dayOfWeek = startDate.getDay();
+    const isHoliday = is_holiday(startDate, holidays)
+    if(dayOfWeek !== 0 && dayOfWeek !== 6 && !isHoliday){
+      obj[change_datetime_to_time(startDate)] = `${i+1}일차`
+      i++
+    }
+    startDate.setDate(startDate.getDate() +1)
+  }
+
+  return obj
+}
+
+
 /**
  * WorkingDay를 일별로 끊어서 n일차로 표시하는 array 생성 함수
  * @param {2022-05-01} startDate WorkingDay 시작일
  * @param {2022-05-05} endDate WorkingDay 종료일
  */
-function set_working_progress_per_day(startDate,endDate){
+
+function set_working_progress_per_day(startDate,endDate, holidays){
+  if(startDate === endDate) return null
   const range = get_working_days(startDate,endDate)
   if(range<=0) return null
-  const arr = new Array(get_working_days(startDate,endDate))
-  for(let i=0;i<range;i++){
-    arr[i] = `${i+1}일차`
-  }
-  return arr
   
+  return get_working_days_array(startDate,endDate,holidays)
 }
+
+
 
 /**
  * input으로 넣은 일자가 오늘 일자랑 같은지 판별하는 함수

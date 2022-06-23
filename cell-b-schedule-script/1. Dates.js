@@ -15,7 +15,6 @@ function get_arranged_date(startDate, endDate, holidays) {
   endDate.toLocaleDateString();
 
   holidays = get_holiday_list(holidays)
-  console.log(`holidays = ${holidays}`)
 
   // startDate 부터 endDate 까지 1일씩 추가 
   const dateArray = get_date_between_start_and_end(startDate, endDate)
@@ -33,10 +32,9 @@ function get_arranged_date(startDate, endDate, holidays) {
  */
 function get_date_between_start_and_end(startDate, endDate) {
     const dateArray = new Array();
-    let currentDate = startDate;
-    while (currentDate <= endDate) {
-        dateArray.push(new Date (currentDate));
-        currentDate = currentDate.addDays(1);
+    while (startDate <= endDate) {
+        dateArray.push(new Date(startDate));
+        startDate = startDate.addDays(1);
     }
     return dateArray;
 }
