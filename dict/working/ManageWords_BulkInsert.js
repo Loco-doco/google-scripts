@@ -26,6 +26,7 @@ class BulkInsert extends ManageWords{
         this.valid.check_value_valid(val)
       },"")
       console.log(words)
+      this.configSheet.getRange("B4").setValue(this.ranKeyCount);
       
       return words
   }

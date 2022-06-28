@@ -45,49 +45,12 @@ class Validation {
         * => str_난수 형태로 만들기
         */
         case 2:
-          if(type==='PREVIEW'){
-            if(val[0]) {
-              const ranNumPart = val[0].substring(4,val[0].length)
-              if(ranNumPart.match(this.patternRanKey)[0].length === ranNumPart.length){
-                val[0] = val[0]
-              } else {
-                ranKeyCount += 1
-                val[0] = "str_"+ranKeyCount
-              }
-            } else {
-              ranKeyCount += 1
-              val[0] = "str_"+ranKeyCount
-            }
-          }
-
-          if(type==='PUBLISH'){
-            const ranNumPart = val[0].substring(4,val[0].length)
-            if(ranNumPart.match(this.patternRanKey)[0].length !== ranNumPart.length) throw new Error (`난수 키 중 잘못된 값이 존재합니다. \\n\\n<해당 스트링> \\n row: ${i+2} \\n key : ${val[0]} \\n value : ${val[2]}`)
-          }
+          [ranKeyCount, val[0]] = change_key_format_ran_err(i,2,this.patternRanKey,ranKeyCount,val[0],val[2])
           acc.push(val)
           break;
 
         case 3:
-          if(type==='PREVIEW'){
-            if(val[0]) {
-              const ranNumPart = val[0].substring(8,val[0].length)
-              if(ranNumPart.match(this.patternRanKey)[0].length === ranNumPart.length){
-                val[0] = val[0]
-              } else {
-                ranKeyCount += 1
-                val[0] = "str_err_"+ranKeyCount
-              }
-            } else {
-              ranKeyCount += 1
-              val[0] = "str_err_"+ranKeyCount
-            }
-          }
-
-          if(type==='PUBLISH'){
-            const ranNumPart = val[0].substring(8,val[0].length)
-            if(ranNumPart.match(this.patternRanKey)[0].length !== ranNumPart.length) throw new Error (`난수 키 중 잘못된 값이 존재합니다. \\n\\n<해당 스트링> \\n row: ${i+2} \\n key : ${val[0]} \\n value : ${val[2]}`)
-          }
-
+          [ranKeyCount, val[0]] = change_key_format_ran_err(i,3,this.patternRanKey,ranKeyCount,val[0],val[2])
           acc.push(val)
           break;
 

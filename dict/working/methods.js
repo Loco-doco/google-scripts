@@ -102,9 +102,24 @@ function do_update_type_num(){
   }
 }
 
-//delete 메인 함수
-function do_delete(){
+// type 2, 3에 대한 바꾸기 함수
+function change_key_format_ran_err(iteration,type,pattern,ranKeyCount,key,value){
+  const [initLine, prefix] = type === 2? [4, "str_"] : [8, "str_err_"]
+  if(key){
+    const ranNumPart = key.substring(initLine,key.length)
+    if(ranNumPart.match(pattern)[0].length !== ranNumPart.length) throw new Error(`난수 키 중 잘못된 값이 존재합니다. \\n\\n<해당 스트링> \\n row: ${iteration+2} \\n key : ${key} \\n value : ${value}`)
+    if(ranNumPart.match(pattern)[0].length === ranNumPart.length){
+      key = key
+    } else {
+      ranKeyCount += 1
+      key = prefix+ranKeyCount
+    }
+  } else {
+    ranKeyCount += 1
+    key = prefix+ranKeyCount
+  }
 
+  return [ranKeyCount, key]
 }
 
 function test(){
