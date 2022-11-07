@@ -10,7 +10,7 @@ class Global extends CoreGlobal{
     this.configSheet = this.getSheetById(this.sa, 364808352);
     this.configSheetName = this.configSheet.getName();
 
-    this.keyCount = this.configSheet.getRange("E2").getValue();
+    this.keyCount = this.configSheet.getRange("G2").getValue();
 
   }
   /* 

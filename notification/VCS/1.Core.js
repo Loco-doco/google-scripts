@@ -11,6 +11,7 @@ class CoreGlobal {
     this.c_colCount = this.c_configSheet.getRange("B1").getValue();
     
   }
+  
   /* 
   * 시트의 고유 아이디 (../gid=:gid) 로 시트 정보 가져오기.
   * 기존의 google script API 중 getSheetByName API가 충돌 이슈가 존재하여 본 커스텀 메소드로 대체함.
