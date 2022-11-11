@@ -27,7 +27,7 @@ class PublishKeys extends Global{
   insert_words_to_published_sheet(language){
     console.log("넣는다")
     const words = this.procedure_valid_format(language)
-    words.splice(0,0,["KR","EN","JP","ES","zh-ZH","zh-TW"])
+    words.splice(0,0,["KR","EN","JP","ES","zh-ZH","zh-TW","TL"])
     this.clear_word_sheet()
     this.wordSheet.getRange(
       1,1,

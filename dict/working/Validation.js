@@ -29,10 +29,12 @@ class Validation {
   */
   change_key_format(words, ranKeyCount, type='PREVIEW'){
     const result = words.reduce((acc,val,i) => {
+      console.log(`words=${words}`)
       switch(val[1]){
         case 1:
           if(val[0].substring(0,4) !== "str_") val[0] = "str_"+val[0]
           val[0] = val[0].replace(/ /g,"_")
+          val[0] = val[0].replace(//g,"")
           val[0] = val[0].toLowerCase(val[0])
           acc.push(val)
           break;
@@ -78,7 +80,7 @@ class Validation {
   check_duplicated_keys(words, publishedWords){
     // input 대상 key만 추출
     const keyList = words.reduce((acc,val) => {
-      if(val[1] === 1) acc.push(val[0])
+      acc.push(val[0])
       return acc
     },[])
 

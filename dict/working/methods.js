@@ -25,6 +25,12 @@ function onOpen(e) {
   }
 }
 
+function test(){
+  const a = new Preview();
+  const targetWords = a.valid_procedure_for_preview(a.targetWords)
+  a.insert_words_to_working_sheet(targetWords)
+}
+
 // insert 메인 함수
 function do_insert(){
   const user = Session.getActiveUser().getEmail();
@@ -122,18 +128,4 @@ function change_key_format_ran_err(iteration,type,pattern,ranKeyCount,key,value)
   return [ranKeyCount, key]
 }
 
-function test(){
-  const ui = SpreadsheetApp.getUi();
-  var response = ui.prompt('May I know your name?', ui.Button.OK);
-  console.log(response)
-
-  // Process the user's response.
-  if (response.getSelectedButton() == ui.Button.YES) {
-    ui.prompt("Yes")
-  } else if (response.getSelectedButton() == ui.Button.NO) {
-    Logger.log('The user didn\'t want to provide a name.');
-  } else {
-    Logger.log('The user clicked the close button in the dialog\'s title bar.');
-  }
-}
 

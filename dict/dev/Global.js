@@ -31,9 +31,10 @@ class Global {
     return this.prepSheet.getRange(2,1,this.wordCount,1).getValues();
   }
   
-  // [KR, EN, JP, ES, ZH, TW]
+  // [KR, EN, JP, ES, ZH, TW, TL]
+  // 언어 추가시 확인!!
   get valueList(){
-    return this.prepSheet.getRange(2,2,this.wordCount,6).getValues();
+    return this.prepSheet.getRange(2,2,this.wordCount,7).getValues();
   }
   
 }
