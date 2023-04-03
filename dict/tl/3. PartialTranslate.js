@@ -34,11 +34,13 @@ class PartialSetting extends Translate {
       
       `
     );
+
     const sheet = response.getResponseText();
+
     if (!sheet) throw new Error(`입력 취소`);
     if (!Object.keys(sheetEnum).includes(sheet))
       throw new Error("올바르지 않은 값입니다.");
-
+    console.log(`sheetInfo = ${sheetEnum[sheet]}`)
     return sheetEnum[sheet];
   }
 
@@ -53,8 +55,8 @@ class PartialSetting extends Translate {
 
     const { sheet, sheetName, rowColInfo } = targetSheet;
     const selectedKeys = this.get_prev_selected_keys(sheet, rowColInfo);
+    console.log(`selectedKeys = ${selectedKeys}`)
     const targetKeys = this.publish.publishedKeyList;
-
     // selectedKeys가 targetKeys에서 몇번 row인지 저장하고
     const targetRows = selectedKeys.reduce((acc, val) => {
       const [row, col] = Global.index_of_2d_array(targetKeys, val[0]);
@@ -80,7 +82,7 @@ class PartialSetting extends Translate {
       ]);
       return acc;
     }, []);
-
+    console.log(`targetValues = ${targetValues}`)
     // 이미 입력된 것들 지워주고
     sheet.getRange(rowColInfo.targetInfoRange).clearContent();
     // 뿌려준다.

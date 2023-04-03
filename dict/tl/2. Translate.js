@@ -277,6 +277,7 @@ class Translate extends Global {
         1
       )
       .getValues();
+    console.log(`keyList = ${keyList}`)
 
     const result = keyList.filter((v) => {
       if (v[0]) return v;
