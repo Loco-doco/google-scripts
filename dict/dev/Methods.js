@@ -1,38 +1,62 @@
-// Custom 메뉴 구현
-function onOpen(e) {
-  SpreadsheetApp.getUi()
-  .createMenu('갖고와버리기')
-  .addItem('JS(React, React-Native)', 'get_words_js')
-  .addItem('Swift(iOS Native)', 'get_words_ios')
-  .addItem('JAVA(Android Native)', 'get_words_aos')
-  .addToUi();
+function atOpen(e) {
+  const sheet = new Global();
+  sheet.wordSheet.hideSheet()
+  const user = Session.getActiveUser().getEmail();
+
+  let rep = 1;
+  console.log(user)
+  while(true){
+    if(user !== 'legokim6857@cclss.net' && user !== 'parkyg34@cclss.net'){
+      sheet.wordSheet.hideSheet()
+      
+      SlackSheetAccess.post({
+        user,
+        rep,
+        updatedAt : new Date()
+      })
+
+      Browser.msgBox("접근ㄴㄴ")
+      rep += 1
+    }else{
+      break;
+    }
+  }
 
   SpreadsheetApp.getUi()
-  .createMenu('Refresh')
-  .addItem('Refresh','published_words_interval_refresh')
-  .addToUi();
-
+    .createMenu('Publish')
+    .addItem('Publish', 'copyToProd')
+    .addToUi();
 }
 
-// JS 갖고오기
-function get_words_js(){
-  published_words_interval_refresh()
-  const a = new PublishKeys();
-  a.insert_words_to_published_sheet("JS");
-}
+/**
+ * Dev 환경의 스트링키를 Prod 환경으로 복제하기.
+ */
+function copyToProd(){
+  const user = Session.getActiveUser().getEmail();
+  const dev = new Global();
+  const prod = new PublishedGlobal();
 
-// AOS 갖고오기
-function get_words_aos(){
-  Browser.msgBox("준비중입니다.")
-}
+  // dev 스트링 키 복제
+  const devStrings = dev.wordSheet.getRange("A:Z").getValues();
+  console.log(`dev 단어 수 = ${devStrings.length}`);
+  console.log(`dev 컬럼 수 = ${devStrings[0].length}`);
 
-// IOS 갖고오기
-function get_words_ios(){
-  Browser.msgBox("준비중입니다.")
-}
+  // // prod 스트링 키 싹 밀기
+  prod.p_wordSheet.getRange("A:Z").clearContent();
 
-function test(){
-  const global = new Global();
-  const data = global.configSheet.getRange("C3:C4").getValues();
-  console.log(data)
+  // // 복제한 값 붙여넣기
+  try{
+    prod.p_wordSheet.getRange(
+      1,1,
+      devStrings.length, devStrings[0].length
+    ).setValues(devStrings);
+
+    SlackDevPublished.post({
+      user,
+      updatedAt : new Date()
+    })
+  } catch(e) {
+    console.log(e)
+  }
+    
 }

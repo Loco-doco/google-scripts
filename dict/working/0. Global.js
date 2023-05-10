@@ -9,8 +9,11 @@ class Global {
     this.workingSheet = this.getSheetById(this.sa, 0);
     this.workingSheetName = this.workingSheet.getName();
 
-    this.wordsRepSheet = this.getSheetById(this.sa, 929438682)
-    this.wordsRepSheetName = this.wordsRepSheet.getName();
+    this.prodSheet = this.getSheetById(this.sa, 929438682)
+    this.prodSheetName = this.prodSheet.getName();
+
+    this.devSheet = this.getSheetById(this.sa, 1716295371)
+    this.devSheetName = this.devSheet.getName();
 
     this.ranKeyCount = this.configSheet.getRange("B4").getValue();
 

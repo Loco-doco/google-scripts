@@ -4,7 +4,7 @@ class Global {
     this.currSheet = this.sa.getActiveSheet();
     
     this.emailListSheet = this.getSheetById(this.sa, 0)
-    this.emailSendSheet = this.getSheetById(this.sa, 1210188466)
+    this.candidateSheet = this.getSheetById(this.sa, 1210188466)
     this.callHistory = this.getSheetById(this.sa, 415136665)
     
     this.configSheet = this.getSheetById(this.sa, 1106907178)
@@ -39,11 +39,12 @@ class Global {
     return [row, col]; 
   } 
 
-  get mapCategoryToEnum(){
-    return {
-      "재테크" : "Economy",
-      "재테크, 부업" : "Economy",
-      "금융, 재테크" : "Economy",
-    }
+  mapCategoryToEnum(category){
+    // return {
+    //   "재테크" : "Economy",
+    //   "재테크, 부업" : "Economy",
+    //   "금융, 재테크" : "Economy",
+    // }
+    return;
   }
 }

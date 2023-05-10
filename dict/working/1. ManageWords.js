@@ -3,6 +3,7 @@ class ManageWords extends Global {
     super()
     this.valid = new Validation();
     this.publish = new PublishedGlobal();
+    this.dev = new DevPublishedGlobal();
   }
 }
 

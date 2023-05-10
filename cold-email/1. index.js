@@ -1,93 +1,57 @@
+/**
+ * Mail 벌크 보내기 메인 함수
+ */
 function sendMailBulk(){
-  // const ui = SpreadsheetApp.getUi();
-  const global = new Global();
-  const sheet = global.emailSendSheet
-  const param = {global, sheet}
+  const operator = Session.getActiveUser().getEmail();
+  if(!isValidOperator(operator)){
+    Browser.msgBox("썩 돌아가거라")
+    return;
+  }
 
-  /**
-   * 보내야 될 타겟 데이터들 갖고 오기.
-   * getTargetData return
-   * [
-   *  {
-   *    "email" : EMAIL,
-   *    "data" : {
-   *      "category" : CATEGORY
-   *      "targetName" : TARGET_NAME,
-   *      "hookText1" : HOOK_TEXT_1
-   *    }
-   *  },
-   * ...
-   * ]
-   */
-  const [targetData,raw] = getTargetDataAndRaw(param);
-  /**
-  * getEmailComponentInfos return
-  * [
-  *  {to, subject, body, options : {from, htmlBody}}
-  * ]
-  * email 보내기 위한 데이터들 갖고 오기.
-  * to = "legokim6857@cclss.net";
-  * subject = "Custom From Email Test";
-  * body = "Hello, world!";
-  * options.from = "obju@cclss.net";
-  * options.htmlBody = getEmailHtml(data)
-  */
-  // const sureYouWantToSendEmail = isOkayToSend(ui)
-
-  // if(sureYouWantToSendEmail){
-  //   const emailComponentInfos = getEmailComponentInfos(param, targetData)
-  //   sendEmail(emailComponentInfos)
-  // } else {
-  //   return;
-  // }
-  afterWork(global,sentRecord)
-}
-
-function sendMailBulkInAdvance(){
   const ui = SpreadsheetApp.getUi();
   const global = new Global();
-  const sheet = global.emailSendSheet
+  const sheet = global.candidateSheet
   const param = {global, sheet}
 
-  /**
-   * 보내야 될 타겟 데이터들 갖고 오기.
-   * getTargetData return
-   * [
-   *  {
-   *    "email" : EMAIL,
-   *    "data" : {
-   *      "category" : CATEGORY
-   *      "targetName" : TARGET_NAME,
-   *      "hookText1" : HOOK_TEXT_1
-   *    }
-   *  },
-   * ...
-   * ]
-   */
-  const targetData = getTargetData(param);
-  /**
-  * getEmailComponentInfos return
-  * [
-  *  {to, subject, body, options : {from, htmlBody}}
-  * ]
-  * email 보내기 위한 데이터들 갖고 오기.
-  * to = "legokim6857@cclss.net";
-  * subject = "Custom From Email Test";
-  * body = "Hello, world!";
-  * options.from = "obju@cclss.net";
-  * options.htmlBody = getEmailHtml(data)
-  */
-  const [isTest, testEmail] = wannaCheckInAdvance(ui);
-  let emailComponentInfos;
+  const [ingredients,raw] = getIngredientsAndRaw(param);
+  
+  const sureYouWantToSendEmail = isOkayToSend(ui)
+  // const sureYouWantToSendEmail = true
 
-  if(isTest){
-    emailComponentInfos = getEmailComponentInfos(param, targetData, testEmail)
+  if(sureYouWantToSendEmail){
+    const emailComponentInfos = getEmailComponentInfos(param, ingredients)
     sendEmail(emailComponentInfos)
   } else {
     return;
   }
 
-  afterwork(global,)
+  const sentRecords = createSentRecord(raw);
+  
+  afterWork(global,sentRecords)
+}
+
+/**
+ * 
+ * @returns 
+ */
+function sendMailBulkInAdvance(){
+  const ui = SpreadsheetApp.getUi();
+  const global = new Global();
+  const sheet = global.candidateSheet
+  const param = {global, sheet}
+  
+  const [ingredients,raw] = getIngredientsAndRaw(param);
+  
+  const [isTest, testEmail] = wannaCheckInAdvance(ui);
+  let emailComponentInfos;
+
+  if(isTest){
+    emailComponentInfos = getEmailComponentInfos(param, ingredients, testEmail)
+    sendEmail(emailComponentInfos)
+  } else {
+    return;
+  }
+
 }
 
 
@@ -120,3 +84,36 @@ function isOkayToSend(ui){
   }
 }
 
+function createSentRecord(records){
+  const sentRecords = records.reduce((acc,record,i) => {
+    const row = [];
+    row.push(
+      record[0], //idx
+      record[1], //회사명
+      record[2], //카테고리
+      record[3], //카테고리 상세
+      record[4], //Email
+      new Date()
+    )
+
+    acc.push(row)
+    return acc
+  },[])
+
+  return sentRecords
+}
+
+function isValidOperator(email){
+  allowedEmails = [
+    "legokim6857@cclss.net",
+    "op@publ.biz",
+    "obju@cclss.net",
+    "ykpark@cclss.net",
+    "contact@publ.biz"
+  ]
+  if(allowedEmails.includes(email)){
+    return true
+  } else {
+    return false
+  }
+}

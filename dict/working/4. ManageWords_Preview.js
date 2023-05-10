@@ -1,6 +1,16 @@
 class Preview extends BulkInsert{
-  constructor(){
+  constructor(env){
     super();
+    switch(env){
+      case "prod" : 
+        this.env = this.publish;
+        break;
+      case "dev" : 
+        this.env = this.dev;
+        break;
+      default :
+        break;
+    }
   }
 
   /*
@@ -11,7 +21,7 @@ class Preview extends BulkInsert{
 
       this.valid.check_omitted_words(targetWords); // 빠진 부분 있니
       [words, this.ranKeyCount] = this.valid.change_key_format(targetWords, this.ranKeyCount,"PREVIEW") // key들 알맞게 바꿔주자
-      this.valid.check_duplicated_keys(words, this.publish.publishedKeyList) // 중복된 거 있니
+      this.valid.check_duplicated_keys(words, this.env.publishedKeyList) // 중복된 거 있니
 
 
       words.reduce((acc,val) => {
