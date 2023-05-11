@@ -8,7 +8,7 @@ class Validation {
   /*
    * 빈 셀이 있는지 검증
    */
-  check_omitted_words(words) {
+  checkForOmittedWords(words) {
     words.reduce((acc, val, i) => {
       if (!val[0] && (val[1] === 1 || val[1] === 4))
         throw new Error(
@@ -46,7 +46,7 @@ class Validation {
   * lowerCase
   * 빈 값 => 언더스코어
   */
-  change_key_format(words, ranKeyCount, type = "PREVIEW") {
+  formatKeys(words, ranKeyCount, type = "PREVIEW") {
     const result = words.reduce((acc, val, i) => {
       console.log(`words=${words}`);
       switch (val[1]) {
@@ -54,7 +54,7 @@ class Validation {
           if (val[0].substring(0, 4) !== "str_") val[0] = "str_" + val[0];
           val[0] = val[0].replace(/ /g, "_");
           val[0] = val[0].replace(//g, "");
-          val[0] = val[0].toLowerCase(val[0]);
+          val[0] = val[0].toLowerCase();
           acc.push(val);
           break;
 
@@ -92,7 +92,7 @@ class Validation {
         case 4:
           if (val[0].substring(0, 4) !== "str_") val[0] = "str_" + val[0];
           val[0] = val[0].replace(/ /g, "_");
-          val[0] = val[0].toLowerCase(val[0]);
+          val[0] = val[0].toLowerCase();
           acc.push(val);
           break;
 
@@ -110,7 +110,7 @@ class Validation {
    * 1. 입력한 것 내에서 검증
    * 2. 이미 있는 키 중에서 검증
    */
-  check_duplicated_keys(words, publishedWords) {
+  checkForDuplicateKeys(words, publishedWords) {
     // input 대상 key만 추출
     const keyList = words.reduce((acc, val) => {
       acc.push(val[0]);
@@ -142,7 +142,7 @@ class Validation {
    * 내용 텍스트(String)의 이상 부분 감지 후 얼럿
    * @param : val (array)
    */
-  check_value_valid(val) {
+  checkWordValidity(val) {
     if (
       String(val[2]).match(this.patternStartWithBlank) ||
       String(val[3]).match(this.patternStartWithBlank)

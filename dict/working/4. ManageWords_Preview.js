@@ -1,4 +1,4 @@
-class Preview extends BulkInsert {
+class Preview extends BulkInsertion {
   constructor(env) {
     super();
     switch (env) {
@@ -19,16 +19,16 @@ class Preview extends BulkInsert {
   valid_procedure_for_preview(targetWords) {
     let words;
 
-    this.valid.check_omitted_words(targetWords); // 빠진 부분 있니
-    [words, this.ranKeyCount] = this.valid.change_key_format(
+    this.valid.checkForOmittedWords(targetWords); // 빠진 부분 있니
+    [words, this.ranKeyCount] = this.valid.formatKeys(
       targetWords,
       this.ranKeyCount,
       "PREVIEW"
     ); // key들 알맞게 바꿔주자
-    this.valid.check_duplicated_keys(words, this.env.publishedKeyList); // 중복된 거 있니
+    this.valid.checkForDuplicateKeys(words, this.env.publishedKeyList); // 중복된 거 있니
 
     words.reduce((acc, val) => {
-      this.valid.check_value_valid(val);
+      this.valid.checkWordValidity(val);
     }, "");
     this.configSheet.getRange("B4").setValue(this.ranKeyCount);
 

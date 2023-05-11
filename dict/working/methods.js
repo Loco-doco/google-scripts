@@ -18,7 +18,7 @@ function onOpen(e) {
 
     SpreadsheetApp.getUi()
       .createMenu("Publish")
-      .addItem("Publish", "do_insert")
+      .addItem("Publish", "doInsert")
       .addToUi();
   } catch (e) {
     console.log(e);
@@ -27,23 +27,22 @@ function onOpen(e) {
 /**
  * insert 메인 함수
  */
-function do_insert() {
+function doInsert() {
   const user = Session.getActiveUser().getEmail();
   console.log(`${user}가 배포 시도`);
 
-  const isAuthorized = isAuthorizedToPublish(user);
-  if (!isAuthorized) return;
+  if (!isUserAuthorized(user)) return;
 
-  const isIncludeProdPublish = is_include_prod_publish();
-  const a = new BulkInsert();
+  const isIncludeProdPublish = askIncludeProdPublish();
+  const bulkInsertion = new BulkInsertion();
 
   try {
-    a.insert_procedure(isIncludeProdPublish)
+    bulkInsertion.performInsertion(isIncludeProdPublish);
   } catch (e) {
     console.log(e);
     Browser.msgBox(e);
     const e_message = e.replace(/\\n/g, "\n");
-    SlackInsert.insert_failed_post({
+    SlackInsert.postInsertionFailure({
       user,
       updatedAt: new Date(),
       e: e_message,
@@ -54,26 +53,17 @@ function do_insert() {
 /**
  * insert - 스트링 키 배포 권한이 있는 사람인지 체크
  */
-function isAuthorizedToPublish(user) {
-  let isAuthorized;
-  if (
-    user !== "legokim6857@cclss.net" &&
-    user !== "ykpark@cclss.net" &&
-    user !== "hjin@cclss.net"
-  ) {
+function isUserAuthorized(user) {
+  const authorizedUsers = ["legokim6857@cclss.net", "ykpark@cclss.net", "hjin@cclss.net"];
+  const isAuthorized = authorizedUsers.includes(user);
+
+  if (!isAuthorized) {
     Browser.msgBox("접근ㄴㄴ");
-    SlackInsert.unauthorized_user_post({
-      user,
-      updatedAt: new Date(),
-    });
-    isAuthorized = false;
-  } else {
-    isAuthorized = true;
+    SlackInsert.postUnauthorizedAccess({ user, updatedAt: new Date() });
   }
 
   return isAuthorized;
 }
-
 
 // preview 메인 함수
 function do_preview() {
@@ -93,10 +83,10 @@ function do_preview() {
  */
 function do_update() {
   const user = Session.getActiveUser().getEmail();
-  const isIncludeProdPublish = is_include_prod_publish();
+  const isIncludeProdPublish = askIncludeProdPublish();
   try {
     const a = new UpdateWord();
-    a.update_published_words(isIncludeProdPublish, user);
+    a.updatePublishedWords(isIncludeProdPublish, user);
     const useRefresh = Browser.inputBox(
       `업데이트 완료.\\n
       마스터 시트를 최신화 하시겠습니까?\\n\\n
@@ -108,7 +98,6 @@ function do_update() {
     Browser.msgBox(e);
   }
 }
-
 
 // type 2, 3에 대한 바꾸기 함수
 function change_key_format_ran_err(
@@ -145,10 +134,14 @@ function change_key_format_ran_err(
 /**
  * 공용 - 스트링 키 배포 / 수정 시 prod까지 포함할 것인지 여부를 묻기
  */
-function is_include_prod_publish() {
+function askIncludeProdPublish() {
   const isIncludeProdPublish = Browser.inputBox(
     `Prod 환경까지 업데이트 하시겠습니까?\\n\\n
-      1 : Yes(Dev && Prod) / 0 : No(Dev만)`
+      1 : Yes(Dev && Prod) / 0 : No(Dev만)\\n`
   );
+  if (isIncludeProdPublish !== "1" && isIncludeProdPublish !== "0"){
+    Browser.msgBox("1아니면 0만 입력하셈");
+    return;
+  }
   return isIncludeProdPublish === "1" ? true : false;
 }

@@ -1,37 +1,37 @@
 function atOpen(e) {
   const sheet = new Global();
-  sheet.wordSheet.hideSheet()
+  sheet.wordSheet.hideSheet();
   const user = Session.getActiveUser().getEmail();
 
   let rep = 1;
-  console.log(user)
-  while(true){
-    if(user !== 'legokim6857@cclss.net' && user !== 'parkyg34@cclss.net'){
-      sheet.wordSheet.hideSheet()
-      
+  console.log(user);
+  while (true) {
+    if (user !== "legokim6857@cclss.net" && user !== "parkyg34@cclss.net") {
+      sheet.wordSheet.hideSheet();
+
       SlackSheetAccess.post({
         user,
         rep,
-        updatedAt : new Date()
-      })
+        updatedAt: new Date(),
+      });
 
-      Browser.msgBox("접근ㄴㄴ")
-      rep += 1
-    }else{
+      Browser.msgBox("접근ㄴㄴ");
+      rep += 1;
+    } else {
       break;
     }
   }
 
   SpreadsheetApp.getUi()
-    .createMenu('Publish')
-    .addItem('Publish', 'copyToProd')
+    .createMenu("Publish")
+    .addItem("Publish", "copyToProd")
     .addToUi();
 }
 
 /**
  * Dev 환경의 스트링키를 Prod 환경으로 복제하기.
  */
-function copyToProd(){
+function copyToProd() {
   const user = Session.getActiveUser().getEmail();
   const dev = new Global();
   const prod = new PublishedGlobal();
@@ -45,18 +45,16 @@ function copyToProd(){
   prod.p_wordSheet.getRange("A:Z").clearContent();
 
   // // 복제한 값 붙여넣기
-  try{
-    prod.p_wordSheet.getRange(
-      1,1,
-      devStrings.length, devStrings[0].length
-    ).setValues(devStrings);
+  try {
+    prod.p_wordSheet
+      .getRange(1, 1, devStrings.length, devStrings[0].length)
+      .setValues(devStrings);
 
     SlackDevPublished.post({
       user,
-      updatedAt : new Date()
-    })
-  } catch(e) {
-    console.log(e)
+      updatedAt: new Date(),
+    });
+  } catch (e) {
+    console.log(e);
   }
-    
 }

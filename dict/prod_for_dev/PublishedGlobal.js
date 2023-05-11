@@ -1,21 +1,23 @@
 class PublishedGlobal {
-  constructor(){
-    this.p_sa = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1DNXHVuHs047d7nEf9Ti4oTsdSEpEcJB2ecaAwHVXDKU/edit?usp=sharing')
-    
-    this.p_configSheet = this.getSheetById(this.p_sa,491417517)
-    this.p_configSheetName = this.p_configSheet.getName()
-    
-    this.p_wordSheet = this.getSheetById(this.p_sa,0)
-    this.p_wordSheetName = this.p_configSheet.getName()
+  constructor() {
+    this.p_sa = SpreadsheetApp.openByUrl(
+      "https://docs.google.com/spreadsheets/d/1DNXHVuHs047d7nEf9Ti4oTsdSEpEcJB2ecaAwHVXDKU/edit?usp=sharing"
+    );
+
+    this.p_configSheet = this.getSheetById(this.p_sa, 491417517);
+    this.p_configSheetName = this.p_configSheet.getName();
+
+    this.p_wordSheet = this.getSheetById(this.p_sa, 0);
+    this.p_wordSheetName = this.p_configSheet.getName();
 
     this.p_wordCount = this.p_configSheet.getRange("A2").getValue();
-    
-    this.p_col_lan_value = 7
+
+    this.p_col_lan_value = 7;
   }
-  /* 
-  * 시트의 고유 아이디 (../gid=:gid) 로 시트 정보 가져오기.
-  * 기존의 google script API 중 getSheetByName API가 충돌 이슈가 존재하여 본 커스텀 메소드로 대체함.
-  */
+  /*
+   * 시트의 고유 아이디 (../gid=:gid) 로 시트 정보 가져오기.
+   * 기존의 google script API 중 getSheetByName API가 충돌 이슈가 존재하여 본 커스텀 메소드로 대체함.
+   */
   getSheetById(sheet, id) {
     return sheet.getSheets().filter((s) => s.getSheetId() === id)[0];
   }
@@ -54,5 +56,4 @@ class PublishedGlobal {
   //     "zh_TW_editor" : 21,
   //   }
   // }
-
 }
